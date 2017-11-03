@@ -33,20 +33,20 @@ public class FileIO {
 			while((line = reader.readLine()) != null){
 				Line tempLine = new Line();
 				
-				//split line into an array of tokenized word Strings
+				//split line into an array of tokenized word Strings using whitespace as delimiters
 				String[] tokenizedLine = line.split("\\s+");
 				//NOTE: don't know what this considers whitespace, might try to count newlines and such
 				//if so, fix !!!
 				
 				//loop through words in tokenizedLine array, strip punctuation and push into line obj
 				for(int i = 0; i < tokenizedLine.length; i++){
-					
+					String tempWord = stripPunctuation(tokenizedLine[i]);
+					tempLine.addWord(tempWord);
 				}
 				
-				
+				//line object completed, push to myFileAttribs
+				myFileAttribs.addLine(tempLine);
 			}
-			
-			
 			
 			return myFileAttribs;
 			
@@ -69,9 +69,11 @@ public class FileIO {
 		}
 	}
 	
-	//helper method to strip punctuation and 
-	public String strip(String word){
+	//helper method to strip punctuation
+	public String stripPunctuation(String word){
 		
+		//this should remove JUST punctuation
+		return word.replaceAll("\\p{Punct}+", "");
 	}
 	
 	//read old serialized files from history and return

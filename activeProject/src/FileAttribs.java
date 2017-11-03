@@ -64,6 +64,24 @@ public class FileAttribs {
 			return false;
 		}
 	}
+	
+	//debug stuff, prints all attributes
+	//good example of how to iterate through the vector of Line data structures contained in obj
+	public void printFileAttribs(){
+		System.out.println("name: " + name);
+		System.out.println("date: " + date);
+		
+		for(int i = 0; i < lines.size(); i++){
+			Line tempLine = lines.elementAt(i);
+			Vector<String> tempWords = tempLine.getWords();
+			
+			for(int j = 0; j < tempWords.size(); j++){
+				System.out.print(tempWords.elementAt(j)+ " ");
+			}
+			
+			System.out.println("");
+		}
+	}
 }
 
 

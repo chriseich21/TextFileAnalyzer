@@ -19,8 +19,12 @@ public class TextFileAnalyzer {
 		//FileIO for creating FileAttrib objects
 		FileIO myFileIO = new FileIO();
 		
+		
+		
 		//vector of FileAttribs that is the size of the pathways returned
 		Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
+		
+		
 		
 		//iterate through provided pathways
 		for (int i = 0; i < pathways.size(); i++){
@@ -35,9 +39,11 @@ public class TextFileAnalyzer {
 				System.out.println("opening File at: " + pathways.elementAt(i) + " [SUCCESS]");
 			}
 			
-			
 		}
 		
+		System.out.println(selectedFiles);//gives unreadable garbage
+		
+		selectedFiles.elementAt(0).printFileAttribs();
 		
 		
 	}
