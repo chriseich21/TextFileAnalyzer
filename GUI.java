@@ -91,12 +91,13 @@ public class GUI {
 				//textOnly = new FileNameExtensionFilter("Text files", "txt"); //text files only
 				//selectFile.setFileFilter(textOnly); //text only filter
 				
-				selectFile.setCurrentDirectory(new java.io.File("C:/Users/Zoe/Desktop")); //directory will be desktop
+				selectFile.setCurrentDirectory(new java.io.File("C:/Users/")); //directory will be desktop
 				selectFile.setDialogTitle("Choose File");
 				selectFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); //file chooser only shows directories and files
 				
 				if(selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) { //user selects file
-					System.out.println(selectFile.getSelectedFile().getAbsolutePath()); //prints exactly what the user clicks on
+					String userFile = selectFile.getSelectedFile().getAbsolutePath(); //prints exactly what the user clicks on
+					System.out.println(userFile);
 				}
 				else { //user hits cancel
 					
