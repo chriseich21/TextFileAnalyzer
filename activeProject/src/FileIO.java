@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.File;
 
 public class FileIO {
 
@@ -17,15 +18,60 @@ public class FileIO {
 		
 		//use pathway to get the file and validate that it works,
 		//set up a reader
+		File file = new File(pathway);
+		BufferedReader reader = null;
 		
-		//create
+		try{
+			reader = new BufferedReader(new FileReader(file));
+			String line = null;
+			
+			//create new FileAttribs obj with pathway as name
+			//might want to thin this down to JUST the filename (and not pathway)
+			FileAttribs myFileAttribs = new FileAttribs(pathway);
+			
+			
+			while((line = reader.readLine()) != null){
+				Line tempLine = new Line();
+				
+				//split line into an array of tokenized word Strings
+				String[] tokenizedLine = line.split("\\s+");
+				//NOTE: don't know what this considers whitespace, might try to count newlines and such
+				//if so, fix !!!
+				
+				//loop through words in tokenizedLine array, strip punctuation and push into line obj
+				for(int i = 0; i < tokenizedLine.length; i++){
+					
+				}
+				
+				
+			}
+			
+			
+			
+			return myFileAttribs;
+			
+		}catch(FileNotFoundException e){
+			//couldnt open file with specificed pathway
+			e.printStackTrace();
+			return null;
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
+		//close the reader
+		finally{
+			try {
+		        if (reader != null) {
+		            reader.close();
+		        }
+		    } catch (IOException e) {
+		    }
+		}
+	}
+	
+	//helper method to strip punctuation and 
+	public String strip(String word){
 		
-		//loop through lines of file
-		//for each new line,
-		
-		
-		//return the parsed file
-		return null;
 	}
 	
 	//read old serialized files from history and return
