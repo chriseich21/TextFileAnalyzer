@@ -29,7 +29,6 @@ public class FileIO {
 			//might want to thin this down to JUST the filename (and not pathway)
 			FileAttribs myFileAttribs = new FileAttribs(pathway);
 			
-			
 			while((line = reader.readLine()) != null){
 				Line tempLine = new Line();
 				
@@ -41,7 +40,11 @@ public class FileIO {
 				//loop through words in tokenizedLine array, strip punctuation and push into line obj
 				for(int i = 0; i < tokenizedLine.length; i++){
 					String tempWord = stripPunctuation(tokenizedLine[i]);
-					tempLine.addWord(tempWord);
+					
+					//check if word was JUST whitespace post-punctuation strip
+					if(tempWord != ""){
+						tempLine.addWord(tempWord);	
+					}
 				}
 				
 				//line object completed, push to myFileAttribs
@@ -58,6 +61,8 @@ public class FileIO {
 			e.printStackTrace();
 			return null;
 		}
+		
+		
 		//close the reader
 		finally{
 			try {
@@ -69,12 +74,36 @@ public class FileIO {
 		}
 	}
 	
+	
+	
 	//helper method to strip punctuation
 	public String stripPunctuation(String word){
 		
+		//written in stages for easy modification/dev
+		
 		//this should remove JUST punctuation
-		return word.replaceAll("\\p{Punct}+", "");
+		word = word.replaceAll("\\p{Punct}+", "");	
+		//remove apostrophes
+		word = word.replaceAll("’", "");
+		
+		//When punctuation is stripped, if the word was ONLY punctuation i.e. " !! "
+		//then a blank word would be added to the line object.  instead, I have a way to check
+		
+		//checks to make sure at least one real character in string 
+		if(word.matches(".*\\w.*")){
+			//System.out.println("working");
+			return word;
+		}else{
+			return "";
+		}
 	}
+
+	
+	
+	
+	
+	
+	
 	
 	//read old serialized files from history and return
 	//(should return FULL objects, even though we'll probably only use name/date)

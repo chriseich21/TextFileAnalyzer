@@ -57,6 +57,8 @@ public class FileAttribs {
 		return lines.elementAt(index);
 	}
 	
+	//NOTE: WAY different from the isEmpty in Line class
+	//this determines if there are NO lines in the files
 	public boolean isEmpty(){
 		if(lines.size() == 0){
 			return true;
@@ -67,6 +69,7 @@ public class FileAttribs {
 	
 	//debug stuff, prints all attributes
 	//good example of how to iterate through the vector of Line data structures contained in obj
+	//should use FileAttrib's getLine function to iterate through like this in FileAnalysis
 	public void printFileAttribs(){
 		System.out.println("name: " + name);
 		System.out.println("date: " + date);
@@ -81,6 +84,9 @@ public class FileAttribs {
 			
 			System.out.println("");
 		}
+		
+		System.out.println("");
+		System.out.println("# of lines: " + lines.size());
 	}
 }
 

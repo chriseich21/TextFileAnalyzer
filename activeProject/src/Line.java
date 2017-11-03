@@ -33,6 +33,10 @@ public class Line {
 		return words.size()-1;
 	}
 	
+	public boolean isEmpty(){
+		return words.isEmpty();
+	}
+	
 	//returns vector of words, for FileAnalysis
 	public Vector<String> getWords(){
 		

@@ -4,7 +4,7 @@ public class TextFileAnalyzer {
 
 	public static void main(String[] args) {
 		
-		new GUI();//Zoe find a way to return the pathway/buttons people choose
+		//new GUI();//Zoe find a way to return the pathway/buttons people choose
 		//for starters, return an vector/whatever of pathways the user chooses.
 		//could be 10, could be 1.
 		
@@ -13,18 +13,14 @@ public class TextFileAnalyzer {
 		//placeholders/testers for returned values/data from GUI
 		Vector<String> pathways = new Vector<String>();//ZOE RETURN THIS DATA STRUCTURE
 		pathways.addElement("/Users/austinpeterson/Desktop/test.txt");//easy testing
-		
+		//if you wanna test stuff have to come up with your own.
 		
 		
 		//FileIO for creating FileAttrib objects
 		FileIO myFileIO = new FileIO();
 		
-		
-		
 		//vector of FileAttribs that is the size of the pathways returned
 		Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
-		
-		
 		
 		//iterate through provided pathways
 		for (int i = 0; i < pathways.size(); i++){
@@ -41,9 +37,13 @@ public class TextFileAnalyzer {
 			
 		}
 		
-		System.out.println(selectedFiles);//gives unreadable garbage
-		
 		selectedFiles.elementAt(0).printFileAttribs();
+		
+		//new File Reading portion done
+		
+		FileAnalysis myFileAnalysis = new FileAnalysis();
+		
+		
 		
 		
 	}
