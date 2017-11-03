@@ -69,7 +69,8 @@ public class FileAttribs {
 	
 	//debug stuff, prints all attributes
 	//good example of how to iterate through the vector of Line data structures contained in obj
-	//should use FileAttrib's getLine function to iterate through like this in FileAnalysis
+	//IMPORTANT: should use FileAttrib's getLine function to iterate through like this in FileAnalysis
+	//the only thing that should be touching the Line objects is the FileAttrib object itself
 	public void printFileAttribs(){
 		System.out.println("name: " + name);
 		System.out.println("date: " + date);

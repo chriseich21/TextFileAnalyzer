@@ -43,6 +43,12 @@ public class TextFileAnalyzer {
 		
 		FileAnalysis myFileAnalysis = new FileAnalysis();
 		
+		//simple testing
+		System.out.println("File Analysis Testing:");
+		System.out.println("size of file: "+myFileAnalysis.getNumLines(selectedFiles.elementAt(0)));
+		System.out.println("blank lines in file: "+myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(0)));
+		System.out.println("# of spaces in file: "+myFileAnalysis.getNumSpaces(selectedFiles.elementAt(0)));
+		System.out.println("# of words in file: "+myFileAnalysis.getNumWords(selectedFiles.elementAt(0)));
 		
 		
 		
