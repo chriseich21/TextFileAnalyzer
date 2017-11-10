@@ -1,3 +1,5 @@
+//Written by Zoe
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -199,10 +201,5 @@ public class GUI {
 		}
 		*/
 		
-	}
-	public static void main(String[] args) 
-	{
-		//need to create object in main
-		new GUI();
 	}
 }
