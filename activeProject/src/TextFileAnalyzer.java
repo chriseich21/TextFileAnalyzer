@@ -50,7 +50,7 @@ public class TextFileAnalyzer {
 		System.out.println("# of spaces in file: "+myFileAnalysis.getNumSpaces(selectedFiles.elementAt(0)));
 		System.out.println("# of words in file: "+myFileAnalysis.getNumWords(selectedFiles.elementAt(0)));
 		System.out.println("avg chars/line in file: "+myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(0)));
-		
+		System.out.println("avg word length in the file: " +myFileAnalysis.avgWordLength(selectedFiles.elementAt(0)));
 		
 		
 	}

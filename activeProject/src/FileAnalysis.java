@@ -90,10 +90,30 @@ public class FileAnalysis {
 		return average;
 	}
 	
-	//
-	public int avgWordLength(FileAttribs file){
+	//Done
+	public double avgWordLength(FileAttribs file){
+		int charsInFile = 0;
+		double avgWordLength = 0;
+		double totalWords = getNumWords(file);
 		
-		return 1;
+		//Iterate through all the lines and find the total characters
+		for(int i = 0; i < file.getSize(); i++) {
+			int charsInline = 0;
+			
+			Vector<String> words = file.getLine(i).getWords();
+			
+			//iterate over words in line
+			for(int j = 0; j < words.size(); j++){
+				charsInline = charsInline + words.elementAt(j).length();
+			}
+			
+			charsInFile = charsInline +charsInFile;
+		}
+		
+		//fine average
+		avgWordLength = charsInFile/totalWords;
+		
+		return avgWordLength;
 	}
 	
 	//return most common words within a String array
