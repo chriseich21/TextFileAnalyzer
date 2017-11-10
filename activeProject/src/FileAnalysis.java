@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 //Austin Peterson
 
 //This class will be responsible of the logic/analysis heavy lifting
@@ -54,10 +56,38 @@ public class FileAnalysis {
 		return numWords;
 	}
 	
-	//
-	public int avgCharsPerLine(FileAttribs file){
-		 
-		return 1;
+	//not currently correct:)
+	//this is probably written less efficient than it could be
+	//feel free to rewrite
+	public double avgCharsPerLine(FileAttribs file){
+		
+		int[] charsPerLine = new int[file.getSize()];
+		
+		//iterate over lines
+		for(int i = 0; i < file.getSize(); i++){
+			int charsInline = 0;
+			
+			Vector<String> words = file.getLine(i).getWords();
+			
+			//iterate over words in line
+			for(int j = 0; j < words.size(); j++){
+				charsInline = charsInline + words.elementAt(j).length();
+			}
+			
+			charsPerLine[i] = charsInline;
+		}
+		
+		//sum the chars
+		double sum = 0;
+		
+		for(int i = 0; i < charsPerLine.length; i++){
+			sum = sum+charsPerLine[i];
+		}
+		
+		//find average
+		double average = sum/(charsPerLine.length);
+		
+		return average;
 	}
 	
 	//
