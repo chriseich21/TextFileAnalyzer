@@ -16,6 +16,9 @@ public class GUI {
 	private JFileChooser selectFile;
 	private FileNameExtensionFilter textOnly;
 	
+	private JButton analyzeFileButton;
+	private String currentFilePath;
+	
 	private JMenuBar toolbar;
 	private JMenu helpOption;
 	private JMenuItem aboutItem;
@@ -68,6 +71,9 @@ public class GUI {
 		//file upload button
 		uploadFileButton = new JButton("Upload File");
 	
+		//analyze file button
+		analyzeFileButton = new JButton("Analyze!");
+		
 		fileFrame.setVisible(true);
 		fileFrame.setSize(700, 500);
 		
@@ -82,6 +88,9 @@ public class GUI {
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 1;
 		filePanel.add(uploadFileButton, panelLayout);
+		panelLayout.gridx = 0;
+		panelLayout.gridy = 2;
+		filePanel.add(analyzeFileButton, panelLayout);
 		
 		//User hits select file button
 		uploadFileButton.addActionListener(new ActionListener(){
@@ -98,7 +107,8 @@ public class GUI {
 				selectFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); //file chooser only shows directories and files
 				
 				if(selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) { //user selects file
-					TextFileAnalyzer.addVectorPath(selectFile.getSelectedFile().getAbsolutePath());   //prints exactly what the user clicks on
+					currentFilePath = selectFile.getSelectedFile().getAbsolutePath();
+					//TextFileAnalyzer.addVectorPath(selectFile.getSelectedFile().getAbsolutePath());   //prints exactly what the user clicks on
 				}
 				else { //user hits cancel
 					
@@ -106,6 +116,17 @@ public class GUI {
 			}
 		});
 		
+		//User hits select file button
+		analyzeFileButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(currentFilePath != null) { //user has chosen at least one file path
+					TextFileAnalyzer.addVectorPath(currentFilePath);   //prints exactly what the user clicks on
+				}
+				else { //user hasn't uploaded file yet. analysis not possible.
+					
+				}
+			}
+		});
 		
 		//User hits help on toolbar
 		helpOption.addActionListener(new ActionListener() {
