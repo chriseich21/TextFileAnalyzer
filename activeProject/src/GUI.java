@@ -33,7 +33,7 @@ public class GUI {
 	private JLabel guideText2;
 	private JLabel guideText3;
 	private JLabel guideText4;
-	
+	private String chosenPath;
 	
 	public GUI()
 	{
@@ -98,13 +98,14 @@ public class GUI {
 				selectFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); //file chooser only shows directories and files
 				
 				if(selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) { //user selects file
-					System.out.println(selectFile.getSelectedFile().getAbsolutePath()); //prints exactly what the user clicks on
+					TextFileAnalyzer.addVectorPath(selectFile.getSelectedFile().getAbsolutePath());   //prints exactly what the user clicks on
 				}
 				else { //user hits cancel
 					
 				}
 			}
 		});
+		
 		
 		//User hits help on toolbar
 		helpOption.addActionListener(new ActionListener() {
@@ -200,6 +201,5 @@ public class GUI {
 			
 		}
 		*/
-		
 	}
 }
