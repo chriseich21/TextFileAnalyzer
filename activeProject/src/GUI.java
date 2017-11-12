@@ -1,6 +1,8 @@
 //Written by Zoe
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.*;
@@ -15,6 +17,9 @@ public class GUI {
 	private JLabel welcomeText;
 	private JFileChooser selectFile;
 	private FileNameExtensionFilter textOnly;
+	
+	private JLabel currentFiles;
+	private JButton clearHistory;
 	
 	private JButton analyzeFileButton;
 	private String currentFilePath;
@@ -75,6 +80,13 @@ public class GUI {
 	
 		//analyze file button
 		analyzeFileButton = new JButton("Analyze!");
+		analyzeFileButton.setEnabled(false); //user cannot hit Analyze! until file uploaded
+		
+		//Current files label
+		currentFiles = new JLabel("Current files:");
+		
+		//Clear history button
+		clearHistory = new JButton("Clear File History");
 		
 		fileFrame.setVisible(true);
 		fileFrame.setSize(700, 500);
@@ -93,6 +105,12 @@ public class GUI {
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 2;
 		filePanel.add(analyzeFileButton, panelLayout);
+		panelLayout.gridx = 0;
+		panelLayout.gridy = 3;
+		filePanel.add(currentFiles, panelLayout);
+		panelLayout.gridx = 0;
+		panelLayout.gridy = 4;
+		filePanel.add(clearHistory, panelLayout);
 		
 		//User hits select file button
 		uploadFileButton.addActionListener(new ActionListener(){
@@ -111,6 +129,7 @@ public class GUI {
 				if(selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) { //user selects file
 					currentFilePath = selectFile.getSelectedFile().getAbsolutePath();
 					//TextFileAnalyzer.addVectorPath(selectFile.getSelectedFile().getAbsolutePath());   //prints exactly what the user clicks on
+					analyzeFileButton.setEnabled(true); //allow user to hit Analyze!
 				}
 				else { //user hits cancel
 					
@@ -149,7 +168,7 @@ public class GUI {
 				GridBagConstraints aboutPanelLayout = new GridBagConstraints();
 				//about text
 				aboutText1 = new JLabel("Text Files Analyzer");
-				aboutText2 = new JLabel("Completed (day)/(month)/(year).");
+				aboutText2 = new JLabel("Completed (day)/11/2017.");
 				aboutText3 = new JLabel("The Text Files Analyzer produces text file statistics. Coded in Java.");
 				aboutText4 = new JLabel("Contributors are Austin Peterson, Christopher Eich, Mark Buenaflor and Zoe Vasquez.");
 				
@@ -182,18 +201,74 @@ public class GUI {
 				guideFrame = new JFrame("Using the Text File Analyzer");
 				guidePanel = new JPanel(new GridBagLayout());
 				GridBagConstraints aboutPanelLayout = new GridBagConstraints();
-				//about text
+				/*//about text
 				guideText1 = new JLabel("Text Files Analyzer");
 				guideText2 = new JLabel("Completed (day)/(month)/(year).");
 				guideText3 = new JLabel("The Text Files Analyzer produces text file statistics. Coded in Java.");
 				guideText4 = new JLabel("Contributors are Austin Peterson, Christopher Eich, Mark Buenaflor and Zoe Vasquez.");
+				*/
+
+				//list model will give us all the items in the list
+				DefaultListModel helpListModel = new DefaultListModel();
+				helpListModel.addElement("Uploading files");
+				helpListModel.addElement("Analyzing files");
+				helpListModel.addElement("Utilizing file history");
+				
+				//create the list for the items
+				JList helpList = new JList(helpListModel);
+				helpList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+				helpList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+				
+				JPanel infoBox = new JPanel();
+				
+				GridBagConstraints infoPanelLayout = new GridBagConstraints();
+				infoPanelLayout.insets = new Insets(10, 10, 10 ,10);
+				JLabel infoText1 = new JLabel("");
+				JLabel infoText2 = new JLabel("");
+				JLabel infoText3 = new JLabel("");
+				
+				infoPanelLayout.gridx = 0;
+				infoPanelLayout.gridy = 1;
+				infoBox.add(infoText1, infoPanelLayout);
+				infoPanelLayout.gridx = 0;
+				infoPanelLayout.gridy = 2;
+				infoBox.add(infoText2, infoPanelLayout);
+				infoPanelLayout.gridx = 0;
+				infoPanelLayout.gridy = 3;
+				infoBox.add(infoText3, infoPanelLayout);
+				
+				JSplitPane guideSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, helpList, infoBox);
+				guideSplitPane.setDividerLocation(150);
 				
 				guideFrame.setVisible(true);
-				guideFrame.setSize(600, 200);
-				/* editing right now
+				guideFrame.setSize(700, 200);
+				// editing right now
 				//add panel to frame
-				aboutFrame.add(aboutPanel);
+				guideFrame.add(guideSplitPane);
 				
+				helpList.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						boolean isAdjusting = e.getValueIsAdjusting();
+						if(isAdjusting==false) {
+							if(helpList.getSelectedIndex()==0) {
+								infoText1.setText("To upload file, hit the Upload File button.");
+								infoText2.setText("Browse your computer for a text file and select it, then hit OK.");
+								infoText3.setText("");
+							}
+							if(helpList.getSelectedIndex()==1) {
+								infoText1.setText("To analyze files, first upload a text file.");
+								infoText2.setText("Then, hit the Analyze! button. It will popup a window giving you a full analysis of your text file.");
+								infoText3.setText("");
+							}
+							if(helpList.getSelectedIndex()==2) {
+								infoText1.setText("The TextAnalyzer can analyze up to three files and provide ");
+								infoText2.setText("a report for statistics of all three files together.");
+								infoText3.setText("To utilize this, upload more than one file, and then hit the Analyze! button.");
+							}
+						}
+					}
+					});
+				/*
 				aboutPanelLayout.gridx = 0;
 				aboutPanelLayout.gridy = 1;
 				aboutPanelLayout.insets = new Insets(10, 10, 10 ,10); //spacing between label
