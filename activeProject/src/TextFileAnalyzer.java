@@ -2,7 +2,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class TextFileAnalyzer {
-	//placeholders/testers for returned values/data from GUI
+/*	//placeholders/testers for returned values/data from GUI
 	static Vector<String> pathways = new Vector<String>();//ZOE RETURN THIS DATA STRUCTURE
 	//initially after new GUI and before pathways.addElement
 	
@@ -48,17 +48,13 @@ public class TextFileAnalyzer {
 				System.out.println("avg chars/line in file: "+myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(0)));
 		return;
 	}
-			
+			*/
 	public static void main(String[] args) {
 		
 		
 		new GUI();//Zoe find a way to return the pathway/buttons people choose
 		//for starters, return an vector/whatever of pathways the user chooses.
 		//could be 10, could be 1.
-		
-		
-		
-		
 	}
 
 }

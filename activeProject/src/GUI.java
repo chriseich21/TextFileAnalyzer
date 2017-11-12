@@ -18,6 +18,8 @@ public class GUI {
 	
 	private JButton analyzeFileButton;
 	private String currentFilePath;
+	private JFrame analysisFrame;
+	private JOptionPane analysisResult;
 	
 	private JMenuBar toolbar;
 	private JMenu helpOption;
@@ -120,7 +122,11 @@ public class GUI {
 		analyzeFileButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				if(currentFilePath != null) { //user has chosen at least one file path
-					TextFileAnalyzer.addVectorPath(currentFilePath);   //prints exactly what the user clicks on
+					String userResults = AnalyzeAdder.addVectorPath(currentFilePath); //using the user's filepath, return string of analysis
+					analysisResult = new JOptionPane(); //Create JOptionPane for popup
+					analysisFrame = new JFrame(); //new frame for the pane
+					analysisResult.showMessageDialog(analysisFrame, userResults); //display popup with the analysis results
+					
 				}
 				else { //user hasn't uploaded file yet. analysis not possible.
 					
