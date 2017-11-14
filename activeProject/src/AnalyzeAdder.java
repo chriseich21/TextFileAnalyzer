@@ -9,13 +9,14 @@ public class AnalyzeAdder {
 	public static String addVectorPath(String newPathway) {
 		pathways.addElement(newPathway);// easy testing
 		// if you wanna test stuff have to come up with your own.
-
+		
 		// FileIO for creating FileAttrib objects
 		FileIO myFileIO = new FileIO();
 
 		// vector of FileAttribs that is the size of the pathways returned
-		// Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
-
+		 Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
+		 
+		 String messageDialog = "";
 		// iterate through provided pathways
 		for (int i = 0; i < pathways.size(); i++) {
 			// call FileIO with current pathway
@@ -26,22 +27,29 @@ public class AnalyzeAdder {
 				System.out.println("opening File at: " + pathways.elementAt(i) + " [FAILED]");
 			} else {
 				selectedFiles.addElement(tempFile);
-				System.out.println("opening File at: " + pathways.elementAt(i) + " [SUCCESS]");
+				// simple testing - modified to return stats of added file
+				messageDialog =  "opening File at: " + pathways.elementAt(i) + " [SUCCESS]\n" + 
+							"File Analysis Testing: " + "\nsize of file: "
+						+ myFileAnalysis.getNumLines(selectedFiles.elementAt(i)) + "\nblank lines in file: "
+						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i)) + "\nblank lines in file: "
+						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i)) + "\n# of spaces in file: "
+						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i)) + "\n# of words in file: "
+						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i)) + "\navg chars/line in file: "
+						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i)) + "\n";
 			}
-
+			selectedFiles.elementAt(i).printFileAttribs();
 		}
-
-		selectedFiles.elementAt(0).printFileAttribs();
-
-		// simple testing
+		
+		/*
+		// simple testing - modified to return stats of added file
 		String messageDialog = "File Analysis Testing: " + "\nsize of file: "
-				+ myFileAnalysis.getNumLines(selectedFiles.elementAt(0)) + "\nblank lines in file: "
-				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(0)) + "\nblank lines in file: "
-				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(0)) + "\n# of spaces in file: "
-				+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(0)) + "\n# of words in file: "
-				+ myFileAnalysis.getNumWords(selectedFiles.elementAt(0)) + "\navg chars/line in file: "
-				+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(0));
-
+				+ myFileAnalysis.getNumLines(selectedFiles.elementAt(pathways.size()-1)) + "\nblank lines in file: "
+				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(pathways.size()-1)) + "\nblank lines in file: "
+				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(pathways.size()-1)) + "\n# of spaces in file: "
+				+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(pathways.size()-1)) + "\n# of words in file: "
+				+ myFileAnalysis.getNumWords(selectedFiles.elementAt(pathways.size()-1)) + "\navg chars/line in file: "
+				+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(pathways.size()-1));
+	*/	
 		// compare outputs
 		/*
 		 * System.out.println("File Analysis Testing:");
@@ -59,5 +67,19 @@ public class AnalyzeAdder {
 		
 		return messageDialog;
 	}
+
+	/* modify later for history?
+	static Vector<String> history = new Vector<String>(); //for previous files
+	public static boolean updateHistory(String currentFilePath) {
+		for(int i = 0; i < history.size(); i++){
+			String previousFile = history.elementAt(i); //find previous file
+			if(currentFilePath.equals(previousFile)) {
+				return false; //file already included
+			}
+		}
+		history.add(currentFilePath); //add this file path to history
+		return true;
+	}
+	*/
 
 }

@@ -20,12 +20,20 @@ public class GUI {
 	private FileNameExtensionFilter textOnly;
 
 	private JLabel currentFiles;
+	private JLabel filesUploaded1;
+	private JLabel filesUploaded2;
+	private JLabel filesUploaded3;
+	private JButton clearUploads;
+	
+	private JFrame historyFrame;
+	private JPanel historyPanel;
+	private String fileHistoryText = "";
 	private JLabel fileHistory1;
 	private JLabel fileHistory2;
 	private JLabel fileHistory3;
 
-	private JButton clearHistory;
 	private int numberOfUploads = 0;
+	private int uploadSpot = 0;
 
 	private JButton analyzeFileButton;
 	private String currentFilePath;
@@ -51,6 +59,10 @@ public class GUI {
 	private JLabel guideText4;
 	private String chosenPath;
 
+	private JMenu historyOption;
+	private JMenuItem seeHistory;
+	private JMenuItem clearHistory;
+	
 	public GUI() {
 		gui();
 	}
@@ -72,6 +84,20 @@ public class GUI {
 		useGuide = new JMenuItem("File Analyzer Guide");
 		helpOption.add(useGuide);
 
+		//History option and dropdown items.
+		// File history option
+		historyOption = new JMenu("History");
+		toolbar.add(historyOption); //history added to toolbar
+		seeHistory = new JMenuItem("See file history");
+		historyOption.add(seeHistory);
+		clearHistory = new JMenuItem("Clear history");
+		historyOption.add(clearHistory);
+		
+		// additional labels for file history
+		fileHistory1 = new JLabel("");
+		fileHistory2 = new JLabel("");
+		fileHistory3 = new JLabel("");
+		
 		// panel.
 		filePanel = new JPanel(new GridBagLayout());
 		// filePanel.setBackground(Color.LIGHT_GRAY);
@@ -89,14 +115,15 @@ public class GUI {
 		analyzeFileButton.setEnabled(false); // user cannot hit Analyze! until file uploaded
 
 		// Current files label
-		currentFiles = new JLabel("Current files: ");
-		// additional labels for file history
-		fileHistory1 = new JLabel("");
-		fileHistory2 = new JLabel("");
-		fileHistory3 = new JLabel("");
-
-		// Clear history button
-		clearHistory = new JButton("Clear File History");
+		currentFiles = new JLabel("Files uploaded: ");		
+		
+		//labels for files uploaded
+		filesUploaded1 = new JLabel("");
+		filesUploaded2 = new JLabel("");
+		filesUploaded3 = new JLabel("");
+		
+		clearUploads = new JButton("Clear Uploads");
+		clearUploads.setEnabled(false); 
 
 		fileFrame.setVisible(true);
 		fileFrame.setSize(700, 500);
@@ -120,66 +147,67 @@ public class GUI {
 		filePanel.add(currentFiles, panelLayout);
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 4;
-		filePanel.add(fileHistory1, panelLayout);
+		filePanel.add(filesUploaded1, panelLayout);
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 5;
-		filePanel.add(fileHistory2, panelLayout);
+		filePanel.add(filesUploaded2, panelLayout);
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 6;
-		filePanel.add(fileHistory3, panelLayout);
+		filePanel.add(filesUploaded3, panelLayout);
 		panelLayout.gridx = 0;
 		panelLayout.gridy = 7;
-		filePanel.add(clearHistory, panelLayout);
+		filePanel.add(clearUploads, panelLayout);
 
 		// User hits select file button
 		uploadFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// when select file button is clicked, view and select text file
 				openFile = new JButton();
+				
 				selectFile = new JFileChooser();
-				// allow text files only
-				// textOnly = new FileNameExtensionFilter("Text files", "txt"); //text files
-				// only
-				// selectFile.setFileFilter(textOnly); //text only filter
-
-				selectFile.setCurrentDirectory(new java.io.File("C:/Users/Zoe/Desktop")); // directory will be desktop
+				selectFile.setCurrentDirectory(new java.io.File("C:/Users/")); // directory will be desktop
 				selectFile.setDialogTitle("Choose File");
 				selectFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // file chooser only shows
 																						// directories and files
 
 				if (selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) { // user selects file
 					currentFilePath = selectFile.getSelectedFile().getAbsolutePath();
-					// TextFileAnalyzer.addVectorPath(selectFile.getSelectedFile().getAbsolutePath());
-					// //prints exactly what the user clicks on
 					analyzeFileButton.setEnabled(true); // allow user to hit Analyze!
-
-					// update history - may change later
-					//NEED TO FIX
-					if (numberOfUploads == 0) {
-						if ((!currentFilePath.equals(fileHistory2.getText())) && (!currentFilePath.equals(fileHistory3.getText()))) {
-							fileHistory1.setText(currentFilePath);
-							numberOfUploads = 1;
-						}
-					}
-					 else if (numberOfUploads == 1) {
-						if ((!currentFilePath.equals(fileHistory1.getText())) && (!currentFilePath.equals(fileHistory3.getText()))) {
-							fileHistory2.setText(currentFilePath);
-							numberOfUploads = 2;
-						}
-					}
-					 else {
-						if ((!currentFilePath.equals(fileHistory1.getText())) && (!currentFilePath.equals(fileHistory2.getText()))) {
-							fileHistory3.setText(currentFilePath);
-							numberOfUploads = 0;
-						}
-					 }
-				}
 					
+					//list files uploaded
+					if (uploadSpot == 0) {
+						if ((!currentFilePath.equals(filesUploaded2.getText()))
+								&& (!currentFilePath.equals(filesUploaded3.getText()))) {
+							filesUploaded1.setText(currentFilePath);
+							uploadSpot = 1;
+							if(numberOfUploads < 3) { //update if user hasn't uploaded 3 files already
+								numberOfUploads = 1;
+							}
+						}
+					} else if (uploadSpot == 1) {
+						if ((!currentFilePath.equals(filesUploaded1.getText()))
+								&& (!currentFilePath.equals(filesUploaded3.getText()))) {
+							filesUploaded2.setText(currentFilePath);
+							uploadSpot = 2;
+							if(numberOfUploads < 3) {
+							numberOfUploads = 2;
+							}
+						}
+					} else {
+						if ((!currentFilePath.equals(filesUploaded1.getText()))
+								&& (!currentFilePath.equals(filesUploaded2.getText()))) {
+							filesUploaded3.setText(currentFilePath);
+							numberOfUploads = 3;
+						}
+					}
+					
+					clearUploads.setEnabled(true); //user can now clear uploads
+				}
 
-				 else { // user hits cancel
+				else { // user hits cancel
 
 				}
-			
+
 			}
 		});
 
@@ -187,26 +215,50 @@ public class GUI {
 		analyzeFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (currentFilePath != null) { // user has chosen at least one file path
-					String userResults = AnalyzeAdder.addVectorPath(currentFilePath); // using the user's filepath,
-																						// return string of analysis
+					String userResults = "";
+					for(int i = 1; i<=numberOfUploads; i++) {
+					//for multiple file functionality
+					if(i==1) {
+						userResults = AnalyzeAdder.addVectorPath(filesUploaded1.getText()); // using the user's filepath,
+						
+					}
+					if(i==2) {
+						userResults = userResults + "\n" + AnalyzeAdder.addVectorPath(filesUploaded2.getText());
+					}
+					if(i==3) {
+						userResults = userResults + "\n" +  AnalyzeAdder.addVectorPath(filesUploaded3.getText());
+					}
+					}
+					// return string of analysis
+					analysisResult = new JOptionPane(); // Create JOptionPane for popup
+					analysisFrame = new JFrame(); // new frame for the pane
+					analysisResult.showMessageDialog(analysisFrame, userResults); 
+					//original method to display results (1 file only)
+					/*String userResults = AnalyzeAdder.addVectorPath(currentFilePath); // using the user's filepath,
+					// return string of analysis
 					analysisResult = new JOptionPane(); // Create JOptionPane for popup
 					analysisFrame = new JFrame(); // new frame for the pane
 					analysisResult.showMessageDialog(analysisFrame, userResults); // display popup with the analysis
-																					// results
-
+					*/
+					
 				} else {
 					// user hasn't uploaded file yet. analysis not possible.
 				}
 			}
 		});
 
-		//user hits clear history button
-		clearHistory.addActionListener(new ActionListener() {
+		// user hits clear uploads button
+		clearUploads.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//reset current file list
-				fileHistory1.setText("");
-				fileHistory2.setText("");
-				fileHistory3.setText("");
+				// reset current file list
+				filesUploaded1.setText("");
+				filesUploaded2.setText("");
+				filesUploaded3.setText("");
+				numberOfUploads = 0; //reset number of uploads
+				uploadSpot = 0;
+				currentFilePath = null;
+				analyzeFileButton.setEnabled(false);
+				clearUploads.setEnabled(false); //grey out clear uploads
 			}
 		});
 		// User hits help on toolbar
@@ -224,7 +276,7 @@ public class GUI {
 				GridBagConstraints aboutPanelLayout = new GridBagConstraints();
 				// about text
 				aboutText1 = new JLabel("Text Files Analyzer");
-				aboutText2 = new JLabel("Completed (day)/11/2017.");
+				aboutText2 = new JLabel("Completed 25/11/2017.");
 				aboutText3 = new JLabel("The Text Files Analyzer produces text file statistics. Coded in Java.");
 				aboutText4 = new JLabel(
 						"Contributors are Austin Peterson, Christopher Eich, Mark Buenaflor and Zoe Vasquez.");
@@ -251,7 +303,37 @@ public class GUI {
 
 			}
 		});
+		
+		seeHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			historyFrame = new JFrame("File History");			
+			historyPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints historyPanelLayout = new GridBagConstraints();
+			// about text
+			
+			historyFrame.setVisible(true);
+			historyFrame.setSize(600, 200);
 
+			// add panel to frame
+			historyFrame.add(historyPanel);
+
+			historyPanelLayout.gridx = 0;
+			historyPanelLayout.gridy = 1;
+			historyPanelLayout.insets = new Insets(10, 10, 10, 10); // spacing between label
+			/*historyPanel.add(aboutText1, historyPanelLayout);
+			historyPanelLayout.gridx = 0;
+			historyPanelLayout.gridy = 2;
+			historyPanel.add(aboutText2, aboutPanelLayout);
+			historyPanelLayout.gridx = 0;
+			historyPanelLayout.gridy = 3;
+			historyPanel.add(aboutText3, aboutPanelLayout);
+			historyPanelLayout.gridx = 0;
+			historyPanelLayout.gridy = 4;
+			historyPanel.add(aboutText4, aboutPanelLayout);*/
+			}
+		});
+		
 		useGuide.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -271,7 +353,8 @@ public class GUI {
 				DefaultListModel helpListModel = new DefaultListModel();
 				helpListModel.addElement("Uploading files");
 				helpListModel.addElement("Analyzing files");
-				helpListModel.addElement("Utilizing file history");
+				helpListModel.addElement("Analyzing multiple files");
+				helpListModel.addElement("File history");
 
 				// create the list for the items
 				JList helpList = new JList(helpListModel);
@@ -322,40 +405,22 @@ public class GUI {
 							}
 							if (helpList.getSelectedIndex() == 2) {
 								infoText1.setText("The TextAnalyzer can analyze up to three files and provide ");
-								infoText2.setText("a report for statistics of all three files together.");
+								infoText2.setText("   a report for statistics of all three files together.");
 								infoText3.setText(
 										"To utilize this, upload more than one file, and then hit the Analyze! button.");
+							}
+							if (helpList.getSelectedIndex() == 3) {
+								infoText1.setText("To view file history, click the history item on the toolbar ");
+								infoText2.setText("and select \"See File History\".  ");
+								infoText3.setText(
+										"To clear it, select \"Clear History\"");
 							}
 						}
 					}
 				});
-				/*
-				 * aboutPanelLayout.gridx = 0; aboutPanelLayout.gridy = 1;
-				 * aboutPanelLayout.insets = new Insets(10, 10, 10 ,10); //spacing between label
-				 * aboutPanel.add(aboutText1, aboutPanelLayout); aboutPanelLayout.gridx = 0;
-				 * aboutPanelLayout.gridy = 2; aboutPanel.add(aboutText2, aboutPanelLayout);
-				 * aboutPanelLayout.gridx = 0; aboutPanelLayout.gridy = 3;
-				 * aboutPanel.add(aboutText3, aboutPanelLayout); aboutPanelLayout.gridx = 0;
-				 * aboutPanelLayout.gridy = 4; aboutPanel.add(aboutText4, aboutPanelLayout);
-				 */
+
 			}
 		});
-		/*
-		 * openFile = new JButton(); selectFile = new JFileChooser(); //allow text files
-		 * only textOnly = new FileNameExtensionFilter("Text files", "txt"); //text
-		 * files only selectFile.setFileFilter(textOnly); //text only filter
-		 * 
-		 * selectFile.setCurrentDirectory(new java.io.File("C:/Users/Zoe/Desktop"));
-		 * //directory will be desktop selectFile.setDialogTitle("Choose File");
-		 * selectFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); //file
-		 * chooser only shows directories and files
-		 * 
-		 * if(selectFile.showOpenDialog(openFile) == JFileChooser.APPROVE_OPTION) {
-		 * //user selects file
-		 * System.out.println(selectFile.getSelectedFile().getAbsolutePath()); //prints
-		 * exactly what the user clicks on } else { //user hits cancel
-		 * 
-		 * }
-		 */
+
 	}
 }
