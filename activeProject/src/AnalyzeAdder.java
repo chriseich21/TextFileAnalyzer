@@ -22,7 +22,7 @@ public class AnalyzeAdder {
 			// call FileIO with current pathway
 			FileAttribs tempFile = myFileIO.FileRead(pathways.elementAt(i));
 
-			//		NOTE: not recognizing invalid files for some reason
+			//		NOTE: not recognizing invalid files
 			// if pathway is invalid, skip this pathway
 			if (myFileIO.FileRead(pathways.elementAt(i)) == null) {
 				System.out.println("opening File at: " + pathways.elementAt(i) + " [FAILED]");
@@ -38,7 +38,7 @@ public class AnalyzeAdder {
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i)) + "\navg chars/line in file: "
 						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i)) + "\n";
 			}
-			selectedFiles.elementAt(i).printFileAttribs();
+			//selectedFiles.elementAt(i).printFileAttribs();
 		}
 		
 		/*
