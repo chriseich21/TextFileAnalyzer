@@ -22,6 +22,7 @@ public class AnalyzeAdder {
 			// call FileIO with current pathway
 			FileAttribs tempFile = myFileIO.FileRead(pathways.elementAt(i));
 
+			//		NOTE: not recognizing invalid files for some reason
 			// if pathway is invalid, skip this pathway
 			if (myFileIO.FileRead(pathways.elementAt(i)) == null) {
 				System.out.println("opening File at: " + pathways.elementAt(i) + " [FAILED]");
