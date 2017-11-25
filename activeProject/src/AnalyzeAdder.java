@@ -37,6 +37,8 @@ public class AnalyzeAdder {
 						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i)) + "\n# of words in file: "
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i)) + "\navg chars/line in file: "
 						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i)) + "\n";
+				
+				//maybe add extra for sum of stats if multiple files exist
 			}
 			//selectedFiles.elementAt(i).printFileAttribs();
 		}
