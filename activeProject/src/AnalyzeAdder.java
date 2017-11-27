@@ -37,7 +37,8 @@ public class AnalyzeAdder {
 						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of spaces in file: "
 						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of words in file: "
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\navg chars/line in file: "
-						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
+						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nmost common words in file: "
+						+ myFileAnalysis.mostCommonWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
 				
 				//maybe add extra for sum of stats if multiple files exist
 			}
