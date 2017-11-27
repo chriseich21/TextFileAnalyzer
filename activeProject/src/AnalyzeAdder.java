@@ -16,27 +16,28 @@ public class AnalyzeAdder {
 		// vector of FileAttribs that is the size of the pathways returned
 		 Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
 		 
+		 int numberOfFailedFiles = 0; //keep track of failed files, otherwise the i value will become inaccurate
 		 String messageDialog = "";
 		// iterate through provided pathways
 		for (int i = 0; i < pathways.size(); i++) {
 			// call FileIO with current pathway
 			FileAttribs tempFile = myFileIO.FileRead(pathways.elementAt(i));
 
-			//		NOTE: not recognizing invalid files
 			// if pathway is invalid, skip this pathway
 			if (myFileIO.FileRead(pathways.elementAt(i)) == null) {
-				System.out.println("opening File at: " + pathways.elementAt(i) + " [FAILED]");
+				numberOfFailedFiles++; //keep track of how many files failed - it will affect which element we want to examine for file stats.
+				messageDialog = "opening File at: " + pathways.elementAt(i) + " [FAILED]\n";
 			} else {
 				selectedFiles.addElement(tempFile);
 				// simple testing - modified to return stats of added file
 				messageDialog =  "opening File at: " + pathways.elementAt(i) + " [SUCCESS]\n" + 
 							"File Analysis Testing: " + "\nsize of file: "
-						+ myFileAnalysis.getNumLines(selectedFiles.elementAt(i)) + "\nblank lines in file: "
-						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i)) + "\nblank lines in file: "
-						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i)) + "\n# of spaces in file: "
-						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i)) + "\n# of words in file: "
-						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i)) + "\navg chars/line in file: "
-						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i)) + "\n";
+						+ myFileAnalysis.getNumLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nblank lines in file: "
+						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nblank lines in file: "
+						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of spaces in file: "
+						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of words in file: "
+						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\navg chars/line in file: "
+						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
 				
 				//maybe add extra for sum of stats if multiple files exist
 			}

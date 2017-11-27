@@ -28,6 +28,12 @@ public class FileIO {
 			//create new FileAttribs obj with pathway as name
 			//might want to thin this down to JUST the filename (and not pathway)
 			FileAttribs myFileAttribs = new FileAttribs(pathway);
+
+			//Zoe added this. Check if file is correct type. Return null if not.
+			if(pathway.endsWith(".txt")==false) {
+				myFileAttribs = null;
+				return myFileAttribs;
+			}
 			
 			while((line = reader.readLine()) != null){
 				Line tempLine = new Line();
