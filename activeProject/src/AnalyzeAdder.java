@@ -1,12 +1,6 @@
-import java.util.Arrays;
+
 import java.util.Vector;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileOutputStream;
-import java.io.BufferedWriter;
-import java.io.Writer;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+
 
 public class AnalyzeAdder {
 	static Vector<String> pathways = new Vector<String>();// ZOE RETURN THIS DATA STRUCTURE
@@ -47,7 +41,9 @@ public class AnalyzeAdder {
 						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of spaces in file: "
 						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of words in file: "
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\navg chars/line in file: "
-						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
+						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nmost common words in file: "
+						+ myFileAnalysis.mostCommonWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
+				
 				//maybe add extra for sum of stats if multiple files exist
 			}
 			//selectedFiles.elementAt(i).printFileAttribs();
