@@ -51,9 +51,8 @@ public class TextFileAnalyzer {
 	}
 			*/
 	public static void main(String[] args) {
-=======
 		FileIO myFileIO = new FileIO();
-		
+		/*
 		//vector of FileAttribs that is the size of the pathways returned
 		Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
 		
@@ -86,8 +85,7 @@ public class TextFileAnalyzer {
 		System.out.println("# of words in file: "+myFileAnalysis.getNumWords(selectedFiles.elementAt(0)));
 		System.out.println("avg chars/line in file: "+myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(0)));
 		System.out.println("avg word length in the file: " +myFileAnalysis.avgWordLength(selectedFiles.elementAt(0)));
->>>>>>> 87d1f7993958935338c4636549b692811f8bd01f
-		
+		*/
 		
 		new GUI();//Zoe find a way to return the pathway/buttons people choose
 		//for starters, return an vector/whatever of pathways the user chooses.
