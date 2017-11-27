@@ -28,7 +28,6 @@ public class GUI {
 	private JFrame historyFrame;
 	private JPanel historyPanel;
 	private String fileHistoryText = "";
-	private JLabel fileHistory1;
 	private JLabel fileHistory2;
 	private JLabel fileHistory3;
 
@@ -94,7 +93,7 @@ public class GUI {
 		historyOption.add(clearHistory);
 		
 		// additional labels for file history
-		fileHistory1 = new JLabel("");
+		final JTextArea fileHistory1 = new JTextArea(10, 40);
 		fileHistory2 = new JLabel("");
 		fileHistory3 = new JLabel("");
 		
@@ -220,7 +219,6 @@ public class GUI {
 					//for multiple file functionality
 					if(i==1) {
 						userResults = AnalyzeAdder.addVectorPath(filesUploaded1.getText()); // using the user's filepath,
-						
 					}
 					if(i==2) {
 						userResults = userResults + "\n" + AnalyzeAdder.addVectorPath(filesUploaded2.getText());
@@ -229,6 +227,7 @@ public class GUI {
 						userResults = userResults + "\n" +  AnalyzeAdder.addVectorPath(filesUploaded3.getText());
 					}
 					}
+					fileHistoryText = AnalyzeAdder.historyFileString;
 					// return string of analysis
 					analysisResult = new JOptionPane(); // Create JOptionPane for popup
 					analysisFrame = new JFrame(); // new frame for the pane
@@ -306,22 +305,29 @@ public class GUI {
 		
 		seeHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+			
 			historyFrame = new JFrame("File History");			
-			historyPanel = new JPanel(new GridBagLayout());
-			GridBagConstraints historyPanelLayout = new GridBagConstraints();
+			historyPanel = new JPanel();
 			// about text
 			
 			historyFrame.setVisible(true);
-			historyFrame.setSize(600, 200);
-
+			historyFrame.setSize(600, 300);
+			
 			// add panel to frame
 			historyFrame.add(historyPanel);
+			
+			fileHistory1.setEditable(false); //user cannot edit file history
+			JScrollPane historyScroll = new JScrollPane(fileHistory1);
+			historyScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-			historyPanelLayout.gridx = 0;
-			historyPanelLayout.gridy = 1;
-			historyPanelLayout.insets = new Insets(10, 10, 10, 10); // spacing between label
-			/*historyPanel.add(aboutText1, historyPanelLayout);
+			if(fileHistoryText == "") {
+				fileHistory1.setText("No file history.");
+			}
+			else {
+			fileHistory1.setText(fileHistoryText);
+			}
+			historyPanel.add(historyScroll);
+			/*
 			historyPanelLayout.gridx = 0;
 			historyPanelLayout.gridy = 2;
 			historyPanel.add(aboutText2, aboutPanelLayout);
@@ -331,6 +337,29 @@ public class GUI {
 			historyPanelLayout.gridx = 0;
 			historyPanelLayout.gridy = 4;
 			historyPanel.add(aboutText4, aboutPanelLayout);*/
+			}
+		});
+		
+		clearHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			final JFrame clearFrame = new JFrame("Cleared History");			
+			final JPanel clearPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints clearPanelLayout = new GridBagConstraints();
+			// about text
+			final JLabel clearedText = new JLabel("History has been cleared.");
+			
+			clearFrame.setVisible(true);
+			clearFrame.setSize(200, 200);
+			
+			// add panel to frame
+			clearFrame.add(clearPanel);
+			clearPanelLayout.gridx = 0;
+			clearPanelLayout.gridy = 2;
+			clearPanel.add(clearedText, clearPanelLayout);
+			AnalyzeAdder.historyFileString = "";
+			fileHistoryText = "";
+			
 			}
 		});
 		

@@ -1,11 +1,21 @@
+import java.util.Arrays;
 import java.util.Vector;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.Writer;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class AnalyzeAdder {
 	static Vector<String> pathways = new Vector<String>();// ZOE RETURN THIS DATA STRUCTURE
 	// new File Reading portion done
 	static FileAnalysis myFileAnalysis = new FileAnalysis();
 	static Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
-
+	
+	static String historyFileString = "";
+	
 	public static String addVectorPath(String newPathway) {
 		pathways.addElement(newPathway);// easy testing
 		// if you wanna test stuff have to come up with your own.
@@ -38,12 +48,13 @@ public class AnalyzeAdder {
 						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of words in file: "
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\navg chars/line in file: "
 						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
-				
 				//maybe add extra for sum of stats if multiple files exist
 			}
 			//selectedFiles.elementAt(i).printFileAttribs();
 		}
-		
+		//add the last file we added in for analysis to history
+		FileAttribs newHistory = myFileIO.FileRead(pathways.elementAt(pathways.size()-1));
+		historyFileString = historyFileString + "name: " + newHistory.name + "\ndate: " + newHistory.date + "\n\n";
 		/*
 		// simple testing - modified to return stats of added file
 		String messageDialog = "File Analysis Testing: " + "\nsize of file: "
