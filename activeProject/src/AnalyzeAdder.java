@@ -3,16 +3,30 @@ import java.util.Vector;
 
 
 public class AnalyzeAdder {
-	static Vector<String> pathways = new Vector<String>();// ZOE RETURN THIS DATA STRUCTURE
+	static Vector<String> pathways = new Vector<String>();
 	// new File Reading portion done
 	static FileAnalysis myFileAnalysis = new FileAnalysis();
 	static Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
 	
 	static String historyFileString = "";
+	static double finalAvgFileSize = 0;
+	static double finalAvgLines = 0;
+	static double finalAvgSpaces = 0;
+	static double finalAvgNumWords = 0;
+	static double finalAvgNumChars = 0;
 	
+	//add pathway given by user for the text file. returns statistics for the text file in a string.
 	public static String addVectorPath(String newPathway) {
-		pathways.addElement(newPathway);// easy testing
-		// if you wanna test stuff have to come up with your own.
+		
+		//local variables for current sum for later average calculations
+		int avgFileSize = 0;
+		int avgLines = 0;
+		int avgSpaces = 0;
+		int avgNumWords = 0;
+		double avgNumChars = 0;
+		
+		//add the pathway
+		pathways.addElement(newPathway);
 		
 		// FileIO for creating FileAttrib objects
 		FileIO myFileIO = new FileIO();
@@ -20,8 +34,12 @@ public class AnalyzeAdder {
 		// vector of FileAttribs that is the size of the pathways returned
 		 Vector<FileAttribs> selectedFiles = new Vector<FileAttribs>();
 		 
-		 int numberOfFailedFiles = 0; //keep track of failed files, otherwise the i value will become inaccurate
+		//keep track of failed files, otherwise the i value will become inaccurate
+		 int numberOfFailedFiles = 0; 
+		 
+		 //messageDialog. it begins as empty string.
 		 String messageDialog = "";
+		 
 		// iterate through provided pathways
 		for (int i = 0; i < pathways.size(); i++) {
 			// call FileIO with current pathway
@@ -37,60 +55,64 @@ public class AnalyzeAdder {
 				messageDialog =  "opening File at: " + pathways.elementAt(i) + " [SUCCESS]\n" + 
 							"File Analysis Testing: " + "\nsize of file: "
 						+ myFileAnalysis.getNumLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nblank lines in file: "
-						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nblank lines in file: "
 						+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of spaces in file: "
 						+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n# of words in file: "
 						+ myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\navg chars/line in file: "
 						+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\nmost common words in file: "
-						+ myFileAnalysis.mostCommonWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n";
+						+ myFileAnalysis.mostCommonWords(selectedFiles.elementAt(i-numberOfFailedFiles)) + "\n\n";
 				
-				//maybe add extra for sum of stats if multiple files exist
+				//extra for sum of stats if multiple files exist
+				avgFileSize += myFileAnalysis.getNumLines(selectedFiles.elementAt(i-numberOfFailedFiles));
+				avgLines += myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(i-numberOfFailedFiles));
+				avgSpaces += myFileAnalysis.getNumSpaces(selectedFiles.elementAt(i-numberOfFailedFiles));
+				avgNumWords += myFileAnalysis.getNumWords(selectedFiles.elementAt(i-numberOfFailedFiles));
+				avgNumChars += myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(i-numberOfFailedFiles));
+				
+				//add the last file we added in for analysis to history
+				FileAttribs newHistory = myFileIO.FileRead(pathways.elementAt(pathways.size()-1));
+				historyFileString = historyFileString + "name: " + newHistory.name + "\ndate: " + newHistory.date + "\n\n";	
+
 			}
-			//selectedFiles.elementAt(i).printFileAttribs();
 		}
-		//add the last file we added in for analysis to history
-		FileAttribs newHistory = myFileIO.FileRead(pathways.elementAt(pathways.size()-1));
-		historyFileString = historyFileString + "name: " + newHistory.name + "\ndate: " + newHistory.date + "\n\n";
-		/*
-		// simple testing - modified to return stats of added file
-		String messageDialog = "File Analysis Testing: " + "\nsize of file: "
-				+ myFileAnalysis.getNumLines(selectedFiles.elementAt(pathways.size()-1)) + "\nblank lines in file: "
-				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(pathways.size()-1)) + "\nblank lines in file: "
-				+ myFileAnalysis.getNumBlankLines(selectedFiles.elementAt(pathways.size()-1)) + "\n# of spaces in file: "
-				+ myFileAnalysis.getNumSpaces(selectedFiles.elementAt(pathways.size()-1)) + "\n# of words in file: "
-				+ myFileAnalysis.getNumWords(selectedFiles.elementAt(pathways.size()-1)) + "\navg chars/line in file: "
-				+ myFileAnalysis.avgCharsPerLine(selectedFiles.elementAt(pathways.size()-1));
-	*/	
-		// compare outputs
-		/*
-		 * System.out.println("File Analysis Testing:");
-		 * System.out.println("size of file: "+myFileAnalysis.getNumLines(selectedFiles.
-		 * elementAt(0)));
-		 * System.out.println("blank lines in file: "+myFileAnalysis.getNumBlankLines(
-		 * selectedFiles.elementAt(0)));
-		 * System.out.println("# of spaces in file: "+myFileAnalysis.getNumSpaces(
-		 * selectedFiles.elementAt(0)));
-		 * System.out.println("# of words in file: "+myFileAnalysis.getNumWords(
-		 * selectedFiles.elementAt(0)));
-		 * System.out.println("avg chars/line in file: "+myFileAnalysis.avgCharsPerLine(
-		 * selectedFiles.elementAt(0)));
-		 */
 		
+		//average only working on first call?
+		//call update average function
+		updateAverage(avgFileSize, avgLines, avgSpaces, avgNumWords, avgNumChars, numberOfFailedFiles);
+
 		return messageDialog;
 	}
 
-	/* modify later for history?
-	static Vector<String> history = new Vector<String>(); //for previous files
-	public static boolean updateHistory(String currentFilePath) {
-		for(int i = 0; i < history.size(); i++){
-			String previousFile = history.elementAt(i); //find previous file
-			if(currentFilePath.equals(previousFile)) {
-				return false; //file already included
-			}
-		}
-		history.add(currentFilePath); //add this file path to history
-		return true;
-	}
-	*/
+	//updates the current average for each file stat
+	public static void updateAverage(double avgFileSize, double avgLines, double avgSpaces, double avgNumWords, double avgNumChars, double numberOfFailedFiles) {
+		finalAvgFileSize = avgFileSize/((pathways.size()-numberOfFailedFiles));
+		finalAvgLines = avgLines/((pathways.size()-numberOfFailedFiles));
+		finalAvgSpaces = avgSpaces/((pathways.size()-numberOfFailedFiles));
+		finalAvgNumWords = avgNumWords/((pathways.size()-numberOfFailedFiles));
+		finalAvgNumChars = avgNumChars/((pathways.size()-numberOfFailedFiles));
 
+		return;
+	}
+	
+	//appends the average among the files to the end of the message dialogue. returns new message dialogue with avgs appended onto it.
+	public static String appendAverage(String currentMD) {
+		currentMD = currentMD + "Averages:\nsize of file: " + finalAvgFileSize
+				+ "\nblank lines: " + finalAvgLines 
+				+ "\n# of spaces: "+ finalAvgSpaces
+				+ "\n# of words: " + finalAvgNumWords 
+				+ "\n# of chars: " + finalAvgNumChars + "\n ";
+		return currentMD;
+	}
+	
+	//clears the current average and resets pathways
+	public static void clearCurrentAverage() {
+		//reset all values
+		finalAvgFileSize = 0; 
+		finalAvgLines = 0;
+		finalAvgSpaces = 0;
+		finalAvgNumWords = 0;
+		finalAvgNumChars = 0;
+		pathways.clear(); //clear the vector pathways.
+		return;
+	}
+	
 }

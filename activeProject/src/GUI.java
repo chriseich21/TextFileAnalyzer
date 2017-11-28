@@ -17,7 +17,6 @@ public class GUI {
 	private JButton openFile;
 	private JLabel welcomeText;
 	private JFileChooser selectFile;
-	private FileNameExtensionFilter textOnly;
 
 	private JLabel currentFiles;
 	private JLabel filesUploaded1;
@@ -28,8 +27,6 @@ public class GUI {
 	private JFrame historyFrame;
 	private JPanel historyPanel;
 	private String fileHistoryText = "";
-	private JLabel fileHistory2;
-	private JLabel fileHistory3;
 
 	private int numberOfUploads = 0;
 	private int uploadSpot = 0;
@@ -48,14 +45,10 @@ public class GUI {
 	private JLabel aboutText2;
 	private JLabel aboutText3;
 	private JLabel aboutText4;
+	
 	private JMenuItem useGuide;
-	private JMenuItem guideItem;
 	private JFrame guideFrame;
 	private JPanel guidePanel;
-	private JLabel guideText1;
-	private JLabel guideText2;
-	private JLabel guideText3;
-	private JLabel guideText4;
 	private String chosenPath;
 
 	private JMenu historyOption;
@@ -75,7 +68,7 @@ public class GUI {
 		toolbar = new JMenuBar();
 		fileFrame.setJMenuBar(toolbar);
 
-		// Help option and dropdown items
+		// Help option and dropdown items (about, user guide)
 		helpOption = new JMenu("Help");
 		toolbar.add(helpOption); // Help added to toolbar
 		aboutItem = new JMenuItem("About");
@@ -91,11 +84,7 @@ public class GUI {
 		historyOption.add(seeHistory);
 		clearHistory = new JMenuItem("Clear history");
 		historyOption.add(clearHistory);
-		
-		// additional labels for file history
-		final JTextArea fileHistory1 = new JTextArea(10, 40);
-		fileHistory2 = new JLabel("");
-		fileHistory3 = new JLabel("");
+		final JTextArea fileHistory1 = new JTextArea(10, 40); //text area for file history
 		
 		// panel.
 		filePanel = new JPanel(new GridBagLayout());
@@ -216,8 +205,9 @@ public class GUI {
 				if (currentFilePath != null) { // user has chosen at least one file path
 					String userResults = "";
 					for(int i = 1; i<=numberOfUploads; i++) {
-					//for multiple file functionality
+					//for multiple file functionality. Iterate until all uploads have had their results printed.
 					if(i==1) {
+						// modify string of analysis
 						userResults = AnalyzeAdder.addVectorPath(filesUploaded1.getText()); // using the user's filepath,
 					}
 					if(i==2) {
@@ -227,18 +217,22 @@ public class GUI {
 						userResults = userResults + "\n" +  AnalyzeAdder.addVectorPath(filesUploaded3.getText());
 					}
 					}
+					
+					if(numberOfUploads>1) { //only calculate averages if more than one file is involved
+					//append a calculation of the average 
+					userResults = AnalyzeAdder.appendAverage(userResults);
+					}
+					//reset average until next time the analyze button is clicked
+					AnalyzeAdder.clearCurrentAverage();
+					
+					//modify history
 					fileHistoryText = AnalyzeAdder.historyFileString;
-					// return string of analysis
+					
+					//create frame for results to be shown in
 					analysisResult = new JOptionPane(); // Create JOptionPane for popup
 					analysisFrame = new JFrame(); // new frame for the pane
+					//display results in frame
 					analysisResult.showMessageDialog(analysisFrame, userResults); 
-					//original method to display results (1 file only)
-					/*String userResults = AnalyzeAdder.addVectorPath(currentFilePath); // using the user's filepath,
-					// return string of analysis
-					analysisResult = new JOptionPane(); // Create JOptionPane for popup
-					analysisFrame = new JFrame(); // new frame for the pane
-					analysisResult.showMessageDialog(analysisFrame, userResults); // display popup with the analysis
-					*/
 					
 				} else {
 					// user hasn't uploaded file yet. analysis not possible.
@@ -255,8 +249,8 @@ public class GUI {
 				filesUploaded3.setText("");
 				numberOfUploads = 0; //reset number of uploads
 				uploadSpot = 0;
-				currentFilePath = null;
-				analyzeFileButton.setEnabled(false);
+				currentFilePath = null; //no current file
+				analyzeFileButton.setEnabled(false); //grey out analyze file button
 				clearUploads.setEnabled(false); //grey out clear uploads
 			}
 		});
@@ -275,7 +269,7 @@ public class GUI {
 				GridBagConstraints aboutPanelLayout = new GridBagConstraints();
 				// about text
 				aboutText1 = new JLabel("Text Files Analyzer");
-				aboutText2 = new JLabel("Completed 25/11/2017.");
+				aboutText2 = new JLabel("Completed 29/11/2017.");
 				aboutText3 = new JLabel("The Text Files Analyzer produces text file statistics. Coded in Java.");
 				aboutText4 = new JLabel(
 						"Contributors are Austin Peterson, Christopher Eich, Mark Buenaflor and Zoe Vasquez.");
@@ -306,37 +300,27 @@ public class GUI {
 		seeHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
+			//create frame for file history
 			historyFrame = new JFrame("File History");			
 			historyPanel = new JPanel();
-			// about text
-			
 			historyFrame.setVisible(true);
 			historyFrame.setSize(600, 300);
 			
 			// add panel to frame
 			historyFrame.add(historyPanel);
 			
+			//create file history text box and add scroll pane
 			fileHistory1.setEditable(false); //user cannot edit file history
 			JScrollPane historyScroll = new JScrollPane(fileHistory1);
 			historyScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-			if(fileHistoryText == "") {
+			if(fileHistoryText == "") { //no history yet
 				fileHistory1.setText("No file history.");
 			}
 			else {
-			fileHistory1.setText(fileHistoryText);
+			fileHistory1.setText(fileHistoryText); //text should be set to current fileHistoryText
 			}
-			historyPanel.add(historyScroll);
-			/*
-			historyPanelLayout.gridx = 0;
-			historyPanelLayout.gridy = 2;
-			historyPanel.add(aboutText2, aboutPanelLayout);
-			historyPanelLayout.gridx = 0;
-			historyPanelLayout.gridy = 3;
-			historyPanel.add(aboutText3, aboutPanelLayout);
-			historyPanelLayout.gridx = 0;
-			historyPanelLayout.gridy = 4;
-			historyPanel.add(aboutText4, aboutPanelLayout);*/
+			historyPanel.add(historyScroll); //include scroll pane in case file upload history is long
 			}
 		});
 		
@@ -346,8 +330,7 @@ public class GUI {
 			final JFrame clearFrame = new JFrame("Cleared History");			
 			final JPanel clearPanel = new JPanel(new GridBagLayout());
 			GridBagConstraints clearPanelLayout = new GridBagConstraints();
-			// about text
-			final JLabel clearedText = new JLabel("History has been cleared.");
+			final JLabel clearedText = new JLabel("History has been cleared."); //communicate to user
 			
 			clearFrame.setVisible(true);
 			clearFrame.setSize(200, 200);
@@ -357,7 +340,10 @@ public class GUI {
 			clearPanelLayout.gridx = 0;
 			clearPanelLayout.gridy = 2;
 			clearPanel.add(clearedText, clearPanelLayout);
+			
+			//reset historyFileString
 			AnalyzeAdder.historyFileString = "";
+			//reset fileHistoryText
 			fileHistoryText = "";
 			
 			}
@@ -369,14 +355,6 @@ public class GUI {
 				guideFrame = new JFrame("Using the Text File Analyzer");
 				guidePanel = new JPanel(new GridBagLayout());
 				GridBagConstraints aboutPanelLayout = new GridBagConstraints();
-				/*
-				 * //about text guideText1 = new JLabel("Text Files Analyzer"); guideText2 = new
-				 * JLabel("Completed (day)/(month)/(year)."); guideText3 = new
-				 * JLabel("The Text Files Analyzer produces text file statistics. Coded in Java."
-				 * ); guideText4 = new
-				 * JLabel("Contributors are Austin Peterson, Christopher Eich, Mark Buenaflor and Zoe Vasquez."
-				 * );
-				 */
 
 				// list model will give us all the items in the list
 				DefaultListModel helpListModel = new DefaultListModel();
@@ -413,7 +391,6 @@ public class GUI {
 
 				guideFrame.setVisible(true);
 				guideFrame.setSize(700, 200);
-				// editing right now
 				// add panel to frame
 				guideFrame.add(guideSplitPane);
 
@@ -422,27 +399,27 @@ public class GUI {
 						boolean isAdjusting = e.getValueIsAdjusting();
 						if (isAdjusting == false) {
 							if (helpList.getSelectedIndex() == 0) {
-								infoText1.setText("To upload file, hit the Upload File button.");
+								infoText1.setText("To upload file, hit the \"Upload File\" button.");
 								infoText2.setText("Browse your computer for a text file and select it, then hit OK.");
 								infoText3.setText("");
 							}
 							if (helpList.getSelectedIndex() == 1) {
 								infoText1.setText("To analyze files, first upload a text file.");
 								infoText2.setText(
-										"Then, hit the Analyze! button. It will popup a window giving you a full analysis of your text file.");
+										"Then, hit the \"Analyze!\" button. It will popup a window giving you a full analysis of your text file.");
 								infoText3.setText("");
 							}
 							if (helpList.getSelectedIndex() == 2) {
-								infoText1.setText("The TextAnalyzer can analyze up to three files and provide ");
-								infoText2.setText("   a report for statistics of all three files together.");
+								infoText1.setText("The TextAnalyzer can analyze up to three files and ");
+								infoText2.setText(" provide a report for statistics of all three files together.");
 								infoText3.setText(
-										"To utilize this, upload more than one file, and then hit the Analyze! button.");
+										"To utilize this, upload more than one file, and then hit the \"Analyze!\" button.");
 							}
 							if (helpList.getSelectedIndex() == 3) {
 								infoText1.setText("To view file history, click the history item on the toolbar ");
 								infoText2.setText("and select \"See File History\".  ");
 								infoText3.setText(
-										"To clear it, select \"Clear History\"");
+										"To clear it, select \"Clear History\". ");
 							}
 						}
 					}
