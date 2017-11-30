@@ -99,7 +99,7 @@ public class AnalyzeAdder {
 				+ "\nblank lines: " + finalAvgLines 
 				+ "\n# of spaces: "+ finalAvgSpaces
 				+ "\n# of words: " + finalAvgNumWords 
-				+ "\n# of chars: " + finalAvgNumChars + "\n ";
+				+ "\navg chars/line: " + finalAvgNumChars + "\n ";
 		return currentMD;
 	}
 	
