@@ -42,7 +42,7 @@ public class FileAnalysis {
 			numSpaces = numSpaces+file.getLine(i).getNumSpaces();
 		}
 		
-		return numSpaces;
+		return numSpaces+ getNumBlankLines(file);
 	}
 
 	//Done
