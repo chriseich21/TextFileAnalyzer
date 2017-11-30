@@ -1,6 +1,5 @@
 //Austin Peterson
 //this is the ONLY class that should touch the file to be read
-//this is the ONLY class that should touch the serialized historical files
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -102,31 +101,5 @@ public class FileIO {
 		}else{
 			return "";
 		}
-	}
-
-	
-	
-	
-	
-	
-	
-	
-	//read old serialized files from history and return
-	//(should return FULL objects, even though we'll probably only use name/date)
-	public FileAttribs[] HistoryRead(){
-		
-		return null;
-	}
-	
-	//should delete all serialized historical FileAttribs objects
-	public void clearHistory(){
-		
-	}
-	
-	//serializes the new FileAttribs object to whereever we end up storing them
-	public void commitHistory(){
-		//might need to call HistoryRead() in order to get old serializations, and
-		//wipe the whole file and reserialize all objects (this will let use kill dupe FileAttrib objs)
-	}
-	
+	}	
 }
